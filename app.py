@@ -102,7 +102,7 @@ interactive_canvas_html = """
 <div id="container">
   <div id="hud">✨ Touch or drag mouse to ripple light & release warmth</div>
   <canvas id="c"></canvas>
-  <div id="breath-hint" id="breathTxt">Gently breathe with the pulse</div>
+  <div id="breath-hint">Gently breathe with the pulse</div>
 </div>
 
 <script>
@@ -209,11 +209,9 @@ let timeVal = 0;
 function animate() {
   timeVal += 0.015;
   
-  // Fading trail
   ctx.fillStyle = 'rgba(2, 6, 23, 0.15)';
   ctx.fillRect(0, 0, width, height);
   
-  // Center gentle pulsating orb (Breathing anchor)
   const breathCycle = Math.sin(timeVal * 1.2);
   const orbRadius = 55 + breathCycle * 18;
   const gradient = ctx.createRadialGradient(width/2, height/2, 5, width/2, height/2, orbRadius * 1.5);
@@ -239,7 +237,6 @@ function animate() {
   ctx.fill();
   ctx.restore();
 
-  // Update particles
   for (let i = particles.length - 1; i >= 0; i--) {
     particles[i].update();
     particles[i].draw(ctx);
@@ -256,7 +253,6 @@ animate();
 </html>
 """
 
-# Crisis Companion Knowledge / Grounding Responses
 COMPANION_RESPONSES = {
     "blank": [
         "Your mind going completely blank is your nervous system's way of hitting the pause button when it is overwhelmed. You do not need to force thoughts right now. Just rest your hands on the table or your lap and feel your feet on the floor.",
@@ -267,10 +263,7 @@ COMPANION_RESPONSES = {
         "Your body is in false alarm overdrive. Take one slow breath in through your nose, then a second tiny sip of air at the very top, and let it all out through your mouth like a long sigh. Let's do that together.",
     ],
     "ground": [
-        "Let us do a simple sensory reset together. Name:
-- 3 things you can see right now
-- 2 physical textures you can feel with your fingertips
-- 1 sound you can hear in the background.",
+        "Let us do a simple sensory reset together. Name 3 things you can see, 2 physical textures you can touch, and 1 sound you can hear.",
         "Touch something cool or solid nearby—a glass of water, the edge of your desk, or your keys. Focus entirely on how smooth or cold it feels against your skin.",
     ],
     "default": [
@@ -291,7 +284,6 @@ def get_companion_reply(user_text):
     else:
         return random.choice(COMPANION_RESPONSES["default"])
 
-# Header
 col_head1, col_head2 = st.columns([3, 1])
 with col_head1:
     st.markdown("## 🌌 Haven")
@@ -301,7 +293,6 @@ with col_head2:
         st.session_state.messages = []
         st.rerun()
 
-# Layout: Left column is the interactive sensory anchor, Right column is the comforting companion
 col_visual, col_chat = st.columns([1.1, 1], gap="large")
 
 with col_visual:
